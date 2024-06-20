@@ -1,0 +1,151 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Add Location</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="styles.css" rel="stylesheet">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+</head>
+<body>
+    <div class="form-container">
+        <div class="menu">
+            <h2>Live:</h2>
+            <form id="liveform">
+                <div id="liveGeocoder"></div>
+                <pre id="liveResult"></pre>
+                <button type="button" onclick="addLocation('live')">Add</button>
+            </form>
+        </div>
+
+        <div class="menu">
+            <h2>In Progress:</h2>
+            <form id="inProgressform">
+                <div id="inProgressGeocoder"></div>
+                <pre id="inProgressResult"></pre>
+                <button type="button" onclick="addLocation('inProgress')">Add</button>
+            </form>
+        </div>
+
+        <div class="menu">
+            <h2>Demo:</h2>
+            <form id="demoform">
+                <div id="demoGeocoder"></div>
+                <pre id="demoResult"></pre>
+                <button type="button" onclick="addLocation('demo')">Add</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoieWFzaG93MzEwMSIsImEiOiJjbHhlbjNmNWEwZ2I3MnJxdDhhcjVsbDlqIn0.RHTOWqOzCCfQAyVg3a7IiA';
+
+        function initializeGeocoder(inputId, resultId) {
+            const geocoder = new MapboxGeocoder({
+                accessToken: mapboxgl.accessToken,
+                mapboxgl: mapboxgl,
+            });
+
+            geocoder.addTo(`#${inputId}`);
+
+            const results = document.getElementById(resultId);
+
+            geocoder.on('result', (e) => {
+                // results.innerText = JSON.stringify(e.result, null, 2);
+                if (e.result) {
+                    const locationData = {
+                        id: e.result.id,
+                        name: e.result.text,
+                        address: e.result.place_name,
+                        longitude: e.result.center[0],
+                        latitude: e.result.center[1],
+                    };
+                    // results.innerText += `Name: ${locationData.name}\nAddress: ${locationData.address}\n\n`;
+
+                    results.dataset.locationData = JSON.stringify(locationData);
+                } else {
+                    results.innerText = '';
+                }
+            });
+
+            // geocoder.on('clear', () => {
+            //     // results.innerText = '';
+            //     results.innerText += `Name: ${locationData.name}\nAddress: ${locationData.address}\n\n`;
+            // });
+        }
+
+        function addLocation(type) {
+            event.preventDefault();
+            const locationResult = document.getElementById(`${type}Result`);
+            const locationData = JSON.parse(locationResult.dataset.locationData);
+
+            const dataToStore = {
+                type: type,
+                id: locationData.id,
+                name: locationData.name,
+                address: locationData.address,
+                longitude: locationData.longitude,
+                latitude: locationData.latitude,
+            };
+
+            fetch('http://localhost:3000/addLocation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataToStore),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error adding location:', error);
+            });
+
+            function DisplayLocations() {
+            fetch('http://localhost:3000/locations')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Fetched locations:', data);
+                })
+                .catch(error => console.error('Error fetching locations:', error));
+            }
+
+            locationResult.innerText += `Name: ${locationData.name}\nAddress: ${locationData.address}\n\n`;
+
+            const storedData = JSON.parse(localStorage.getItem('locations')) || { live: [], inProgress: [], demo: [] };
+
+            storedData[type].push(dataToStore);
+
+            localStorage.setItem('locations', JSON.stringify(storedData));
+
+            console.log(`Adding ${JSON.stringify(dataToStore)} to ${type} locations.`);
+        }
+
+        window.onload = function() {
+            initializeGeocoder('liveGeocoder', 'liveResult');
+            initializeGeocoder('inProgressGeocoder', 'inProgressResult');
+            initializeGeocoder('demoGeocoder', 'demoResult');
+        };
+
+        // function displayStoredLocation(){
+        //     const storedData = JSON.parse(localStorage.getItem('locations')) || { live: [], inProgress: [], demo: [] };
+        //     console.log('')
+        // }
+
+    </script>
+
+    <div class="btn custom-btn">
+        <a href="map.html">
+            <button type="button">Digital Presence</button>
+        </a>
+    </div>
+</body>
+</html>
