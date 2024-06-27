@@ -44,6 +44,7 @@
                     </div>
                 </div>
 
+<<<<<<< HEAD
                 <div class="col-12 col-md-4 mb-4">
                     <div class="card mb-4">
                         <div class="card-body">
@@ -71,6 +72,17 @@
             </div>
         </div> 
     <!-- </div>            -->
+=======
+        <div class="menu">
+            <h2>Demo:</h2>
+            <form id="demoform">
+                <div id="demoGeocoder"></div>
+                <pre id="demoResult"></pre>
+                <button type="button" onclick="addLocation ('demo')">Add</button>
+            </form>
+        </div>
+    </div>
+>>>>>>> 42dd4dfdf9b1f73b27096adc0b96cb996f8a9c6f
     <script>
         var locations ={
             live:[],
@@ -207,8 +219,30 @@
             .catch(error => {
                 console.error('Error adding location:', error);
             });
-        }
 
+            // function DisplayLocations() {
+            // fetch('http://localhost:3000/locations')
+//                 .then(response => response.json())
+//                 .then(data => {
+//                     console.log('Fetched locations:', data);
+//                 })
+//                 .catch(error => console.error('Error fetching locations:', error));
+//             }
+
+//             locationResult.innerText += `Name: ${locationData.name}\nAddress: ${locationData.address}\n\n`;
+
+//             const storedData = JSON.parse(localStorage.getItem('locations')) || { live: [], inProgress: [], demo: [] };
+
+//             storedData[type].push(dataToStore);
+
+//             localStorage.setItem('locations', JSON.stringify(storedData));
+
+//             console.log(`Adding ${JSON.stringify(dataToStore)} to ${type} locations.`);
+
+//             // DisplayLocations();
+// >>>>>>> 42dd4dfdf9b1f73b27096adc0b96cb996f8a9c6f
+//         }
+        }
     </script>
 
 </body>

@@ -8,32 +8,6 @@ const cors = require('cors')
 app.use(bodyparser.json());
 app.use(cors());
 
-    const initializeData = () => {
-        fs.readFile('data.json', (err, data) => {
-            let locations = { live: [], inProgress: [], demo: [] };
-    
-            if (!err) {
-                try {
-                    locations = JSON.parse(data);
-                } catch (parseErr) {
-                    console.error('Error parsing data file:', parseErr);
-                }
-            }
-    
-            locations.live = locations.live || [];
-            locations.inProgress = locations.inProgress || [];
-            locations.demo = locations.demo || [];
-    
-            const updatedData = JSON.stringify(locations, null, 2);
-            fs.writeFile('data.json', updatedData, err => {
-                if (err) throw err;
-                console.log('Initial data added successfully');
-            });
-        });
-    };
-
-initializeData();
-
 app.post('/addLocation', (req, res) => {
     const newLocations = req.body;
     console.log(req.body)
@@ -41,7 +15,7 @@ app.post('/addLocation', (req, res) => {
     fs.readFile('data.json', (err, data) => {
         if (err) throw err;
 
-        let locations={}
+        let locations;
         try {
             locations = JSON.parse(data);
         } catch (parseErr) {
@@ -49,48 +23,41 @@ app.post('/addLocation', (req, res) => {
             return res.status(500).send('Internal Server Error');
         }
 
-        // req.body.forEach(newLocation=>{
-        //         locations.live = locations.live.filter(x => x.id !== newLocation.id);
-        //         locations.inProgress = locations.inProgress.filter(x => x.id !== newLocation.id);
-        //         locations.demo = locations.demo.filter(x => x.id !== newLocation.id);
+        if (!locations || typeof locations !== 'object') {
+            locations = { live: [], inProgress: [], demo: [] };
+        }
 
-        //         switch (newLocation.type) {
-        //             case 'live':
-        //                 locations.live.push(newLocation);
-        //                 break;
-        //             case 'inProgress':
-        //                 locations.inProgress.push(newLocation);
-        //                 break;
-        //             case 'demo':
-        //                 locations.demo.push(newLocation);
-        //                 break;
-        //             default:
-        //                 return res.status(400).send('Invalid location type');
-        //             }
-        //         })
+        if (!Array.isArray(locations.live)) {
+            locations.live = [];
+        }
+        if (!Array.isArray(locations.inProgress)) {
+            locations.inProgress = [];
+        }
+        if (!Array.isArray(locations.demo)) {
+            locations.demo = [];
+        }
 
-        newLocations.live.forEach(newLocation => {
-            locations.live = locations.live.filter(x => x.id !== newLocation.id);
-            locations.live.push(newLocation);
-        });
+        switch (newLocation.type) {
+            case 'live':
+                locations.live.push(newLocation);
+                break;
+            case 'inProgress':
+                locations.inProgress.push(newLocation);
+                break;
+            case 'demo':
+                locations.demo.push(newLocation);
+                break;
+            default:
+                return res.status(400).send('Invalid location type');
+        }
 
-        newLocations.inProgress.forEach(newLocation => {
-            locations.inProgress = locations.inProgress.filter(x => x.id !== newLocation.id);
-            locations.inProgress.push(newLocation);
-        });
-
-        newLocations.demo.forEach(newLocation => {
-            locations.demo = locations.demo.filter(x => x.id !== newLocation.id);
-            locations.demo.push(newLocation);
-        });
-                fs.writeFile('data.json', JSON.stringify(locations, null, 2), (err) => {
-                    if (err) throw err;
-                    console.log("UPDATED")
-            })
+        fs.writeFile('data.json', JSON.stringify(locations, null, 2), (err) => {
+            if (err) throw err;
+            res.status(200).send('Location added successfully');
         });
     })
 
-
+})
 app.get('/locations', (req, res) => {
     fs.readFile('data.json', (err, data) => {
         if (err) throw err;
