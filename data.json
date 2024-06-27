@@ -1,10 +1,96 @@
-[
-  {
-    "type": "live",
-    "id": "place.29403243",
-    "name": "Mumbai",
-    "address": "Mumbai, Maharashtra, India",
-    "longitude": 72.878723,
-    "latitude": 19.077793
-  }
-]
+{
+  "live": [
+    {
+      "type": "live",
+      "id": "place.29403243",
+      "name": "Mumbai",
+      "address": "Mumbai, Maharashtra, India",
+      "longitude": 72.878723,
+      "latitude": 19.077793
+    },
+    {
+      "type": "live",
+      "id": "place.29403243",
+      "name": "Mumbai",
+      "address": "Mumbai, Maharashtra, India",
+      "longitude": 72.878723,
+      "latitude": 19.077793
+    },
+    {
+      "type": "live",
+      "id": "place.29403243",
+      "name": "Mumbai",
+      "address": "Mumbai, Maharashtra, India",
+      "longitude": 72.878723,
+      "latitude": 19.077793
+    },
+    {
+      "type": "live",
+      "id": "place.297067",
+      "name": "Ahmedabad",
+      "address": "Ahmedabad, Gujarat, India",
+      "longitude": 72.579498,
+      "latitude": 23.02318
+    }
+  ],
+  "inProgress": [
+    {
+      "type": "live",
+      "id": "place.29403243",
+      "name": "New Delhi",
+      "address": "Mumbai, Maharashtra, India",
+      "longitude": 72.878723,
+      "latitude": 19.077793
+    },
+    {
+      "type": "live",
+      "id": "place.29403243",
+      "name": "New Delhi",
+      "address": "Mumbai, Maharashtra, India",
+      "longitude": 72.878723,
+      "latitude": 19.077793
+    },
+    {
+      "type": "inProgress",
+      "id": "place.6957135",
+      "name": "London",
+      "address": "London, Greater London, England, United Kingdom",
+      "longitude": -0.127647,
+      "latitude": 51.5073
+    },
+    {
+      "type": "inProgress",
+      "id": "place.34564166",
+      "name": "Madrid",
+      "address": "Madrid, Madrid, Spain",
+      "longitude": -3.702979,
+      "latitude": 40.419224
+    }
+  ],
+  "demo": [
+    {
+      "type": "live",
+      "id": "place.29403243",
+      "name": "Pune",
+      "address": "Mumbai, Maharashtra, India",
+      "longitude": 72.878723,
+      "latitude": 19.077793
+    },
+    {
+      "type": "live",
+      "id": "place.29403243",
+      "name": "Pune",
+      "address": "Mumbai, Maharashtra, India",
+      "longitude": 72.878723,
+      "latitude": 19.077793
+    },
+    {
+      "type": "demo",
+      "id": "place.233720044",
+      "name": "New York City",
+      "address": "New York City, New York, United States",
+      "longitude": -74.0059945,
+      "latitude": 40.7127492
+    }
+  ]
+}

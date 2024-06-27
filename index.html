@@ -34,7 +34,7 @@
             <form id="demoform">
                 <div id="demoGeocoder"></div>
                 <pre id="demoResult"></pre>
-                <button type="button" onclick="addLocation('demo')">Add</button>
+                <button type="button" onclick="addLocation ('demo')">Add</button>
             </form>
         </div>
     </div>
@@ -127,6 +127,8 @@
             localStorage.setItem('locations', JSON.stringify(storedData));
 
             console.log(`Adding ${JSON.stringify(dataToStore)} to ${type} locations.`);
+
+            // DisplayLocations();
         }
 
         window.onload = function() {
